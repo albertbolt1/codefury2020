@@ -25,7 +25,7 @@ SECRET_KEY = 'p40^m-%*-ml1wxu6rrk*y_!77s=qiow*#&2x7*g&y766%9kf0-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['codefurybackend.herokuapp.com','https://codefurybackend.herokuapp.com/']
 
 
 # Application definition
