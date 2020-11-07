@@ -153,34 +153,37 @@ def allocatedistrict(request,slug):
 			print(b.json())
 	else:
 		array=[noof_gloves_small,noof_gloves,noof_sweater_small,noof_sweater,noof_socks,noof_muffler,noof_monkey_cap_small,noof_monkey_cap]
-		c=[[] for i in range(length)]
-		for k1 in array:
-			z=math.ceil(k1/length)
+		if(array.count(0)==len(array)):
+			return JsonResponse({'message':'no resource to allocate'})
+		else:
+			c=[[] for i in range(length)]
+			for k1 in array:
+				z=math.ceil(k1/length)
+				for i in range(length):
+					if(k1>=z):
+						c[i].append(z)
+						k1-=z
+					elif(k1<z and k1>0):
+						c[i].append(k1)
+						k1=0
+					elif(k1==0):
+						c[i].append(0)
+
 			for i in range(length):
-				if(k1>=z):
-					c[i].append(z)
-					k1-=z
-				elif(k1<z and k1>0):
-					c[i].append(k1)
-					k1=0
-				elif(k1==0):
-					c[i].append(0)
+				url="http://127.0.0.1:8000/TailorworkAllocated/"
+				myobj={'tailor':b[i]['id'],'gloves_small':c[i][0],'gloves':c[i][1],'sweater_small': c[i][2],'sweater': c[i][3],'socks': c[i][4],'muffler': c[i][5],'monkey_cap_small':c[i][6],'monkey_cap': c[i][7]}
+				x=requests.post(url,json=myobj)
 
-		for i in range(length):
-			url="http://127.0.0.1:8000/TailorworkAllocated/"
-			myobj={'tailor':b[i]['id'],'gloves_small':c[i][0],'gloves':c[i][1],'sweater_small': c[i][2],'sweater': c[i][3],'socks': c[i][4],'muffler': c[i][5],'monkey_cap_small':c[i][6],'monkey_cap': c[i][7]}
-			x=requests.post(url,json=myobj)
+			for i in a1:
+				url="http://127.0.0.1:8000/order/"+str(i['id'])+"/"
+				x=requests.get(url)
+				req_json=x.json()
+				del req_json['url'];
+				del req_json['id'];
+				req_json['order_processed']=True
+				b=requests.put(url,json=req_json)
 
-		for i in a1:
-			url="http://127.0.0.1:8000/order/"+str(i['id'])+"/"
-			x=requests.get(url)
-			req_json=x.json()
-			del req_json['url'];
-			del req_json['id'];
-			req_json['order_processed']=True
-			b=requests.put(url,json=req_json)
-
-		return JsonResponse({'message':'allocation was successfull'})
+			return JsonResponse({'message':'allocation was successfull'})
 
 
 
