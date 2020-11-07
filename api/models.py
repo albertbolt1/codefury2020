@@ -61,7 +61,7 @@ class TailorWorkAllocated(models.Model):
     monkey_cap=models.IntegerField()
     order_completed=models.BooleanField(default=False)
     dateofallocation=models.DateField(default=datetime.date.today)
-
+    picked_up_or_not=models.BooleanField(default=False)
 
 class DistrictwiseReadyList(models.Model):
     district=models.ForeignKey(District, on_delete=models.CASCADE)
@@ -75,4 +75,13 @@ class DistrictwiseReadyList(models.Model):
     monkey_cap=models.IntegerField(default=0)
 
 
+
+class Valet(models.Model):
+    name=models.CharField(max_length=20, null=False)
+    password=models.CharField(max_length=20, null=False)
+    vehicleno=models.CharField(max_length=20, null=False)
+    phonenumber=models.CharField(max_length=10,blank=False)
+    city=models.CharField(max_length=100)
+    district=models.ForeignKey(District, on_delete=models.CASCADE)
+    driverbusy_or_not=models.BooleanField(default=False)
 

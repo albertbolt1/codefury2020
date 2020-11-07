@@ -1,6 +1,5 @@
 from rest_framework import serializers 
-from api.models import OrderUser,Order,District,Tailor,TailorWorkAllocated,DistrictwiseReadyList
- 
+from api.models import OrderUser,Order,District,Tailor,TailorWorkAllocated,DistrictwiseReadyList,Valet
 class DistrictSerializer(serializers.ModelSerializer):
  
     class Meta:
@@ -37,7 +36,7 @@ class TailorWorkAllocatedSerializer(serializers.ModelSerializer):
  
     class Meta:
         model = TailorWorkAllocated
-        fields = ('id','url','tailor','gloves_small','gloves','sweater_small','sweater','socks','muffler','monkey_cap_small','monkey_cap','order_completed','dateofallocation')
+        fields = ('id','url','tailor','gloves_small','gloves','sweater_small','sweater','socks','muffler','monkey_cap_small','monkey_cap','order_completed','dateofallocation','picked_up_or_not')
 
 
 
@@ -47,3 +46,13 @@ class DistrictwiseReadyListSerializer(serializers.ModelSerializer):
     class Meta:
         model = DistrictwiseReadyList
         fields = ('id','url','district','gloves_small','gloves','sweater_small','sweater','socks','muffler','monkey_cap_small','monkey_cap')
+
+
+class ValetSerializer(serializers.ModelSerializer):
+ 
+    class Meta:
+        model = Valet
+        fields = ('id','url','name','password','vehicleno','phonenumber','city','district','driverbusy_or_not')
+
+
+

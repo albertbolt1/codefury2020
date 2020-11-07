@@ -3,8 +3,8 @@ from datetime import datetime
 # Create your views here.
 from rest_framework import viewsets
 from rest_framework import status
-from api.models import OrderUser,Order,District,Tailor,TailorWorkAllocated,DistrictwiseReadyList
-from api.serializers import OrderUserSerializer,OrderSerializer,DistrictSerializer,TailorSerializer,TailorWorkAllocatedSerializer,DistrictwiseReadyListSerializer
+from api.models import OrderUser,Order,District,Tailor,TailorWorkAllocated,DistrictwiseReadyList,Valet
+from api.serializers import OrderUserSerializer,OrderSerializer,DistrictSerializer,TailorSerializer,TailorWorkAllocatedSerializer,DistrictwiseReadyListSerializer,ValetSerializer
 from rest_framework.decorators import api_view
 from django.core import serializers
 from django.http.response import JsonResponse
@@ -38,6 +38,10 @@ class TailorWorkAllocatedView(viewsets.ModelViewSet):
 class DistrictwiseReadyListSerializerView(viewsets.ModelViewSet):
 	queryset = DistrictwiseReadyList.objects.all()
 	serializer_class=DistrictwiseReadyListSerializer
+
+class ValetView(viewsets.ModelViewSet):
+	queryset = Valet.objects.all()
+	serializer_class=ValetSerializer
 
 
 
@@ -330,7 +334,6 @@ def districtwisesendtopeople(request,pk):
 		myobj={"district":pk,"gloves_small":noof_gloves_small,"gloves":noof_gloves,"sweater_small": noof_sweater_small,"sweater": noof_sweater,"socks": noof_socks,"muffler": noof_muffler,"monkey_cap_small": noof_monkey_cap_small,"monkey_cap": noof_monkey_cap}
 		xdput=requests.put(urld,json=myobj)
 		print(xdput.json())
-
 		print(completed)
 		for i in completed:
 			urllast="http://127.0.0.1:8000/order/"+str(i)+"/"
@@ -361,30 +364,57 @@ def districtwisesendtopeople(request,pk):
 			}
 			response = requests.request("GET", urlmobile, headers=headers, params=querystring)
 			print(response.json())
-
 		return JsonResponse({'message':'successfull'})
 	
 
 
 
-			
+
+@api_view(['GET'])
+def autoservice(request,slug):
+	notdeliveredlist=TailorWorkAllocated.objects.filter(tailor__district__name=slug,picked_up_or_not=False,order_completed=True).order_by('dateofallocation').reverse()
+	driverlist=Valet.objects.filter(district__name=slug,driverbusy_or_not=False)
+	a=[]
+	b=[]
+	for i in notdeliveredlist:
+		a.append(i.__dict__)
+	for j in driverlist:
+		b.append(j.__dict__)
+
+	if(len(a)<=0 or len(b)<=0):
+		return JsonResponse({'message':'NO orders available'})
+	else:
+		object1=Valet.objects.get(id=b[0]['id'])
+		name=object1.name
+		object1.driverbusy_or_not=True
+		object1.save()
+		object2=TailorWorkAllocated.objects.get(id=a[0]['id'])
+		object2.picked_up_or_not=True
+		object2.save()
+		address=str(object2.tailor.houseno)+" "+str(object2.tailor.city)
 
 
+		phonenumber=b[0]['phonenumber']
 
+		urlmobile = "https://http-api.d7networks.com/send"
+		mobileno="+91"+phonenumber
+		custommessage="please pick the parcels from "+ address +" and take it to depo"
+		querystring = {
+		"username":"bhpq4660",
+		"password":"mBTcsbRf",
+		"from":"Test%20SMS",
+		"content":custommessage,
+		"dlr-method":"POST",
+		"dlr-url":"https://4ba60af1.ngrok.io/receive",
+		"dlr":"yes",
+		"dlr-level":"3",
+		"to":mobileno
+		}
+		headers = {
+		'cache-control': "no-cache"
+		}
+		response = requests.request("GET", urlmobile, headers=headers, params=querystring)
+		print(response.json())
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		return JsonResponse({'name':'address'})
 
