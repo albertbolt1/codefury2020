@@ -37,4 +37,4 @@ class TailorWorkAllocatedSerializer(serializers.ModelSerializer):
  
     class Meta:
         model = TailorWorkAllocated
-        fields = ('id','url','tailor','gloves_small','gloves','sweater_small','sweater','socks','muffler','monkey_cap_small','monkey_cap','order_completed')
+        fields = ('id','url','tailor','gloves_small','gloves','sweater_small','sweater','socks','muffler','monkey_cap_small','monkey_cap','order_completed','dateofallocation')

@@ -1,5 +1,5 @@
 from django.db import models
-
+import datetime
 class District(models.Model):
     name= models.CharField(max_length=50,blank=False)
     def __str__(self):
@@ -60,6 +60,7 @@ class TailorWorkAllocated(models.Model):
     monkey_cap_small=models.IntegerField()
     monkey_cap=models.IntegerField()
     order_completed=models.BooleanField(default=False)
+    dateofallocation=models.DateField(default=datetime.date.today)
 
 
 

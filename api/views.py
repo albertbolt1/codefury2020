@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from datetime import datetime
 # Create your views here.
 from rest_framework import viewsets
 from rest_framework import status
@@ -149,8 +149,8 @@ def allocatedistrict(request,slug):
 			del req_json['url'];
 			del req_json['id'];
 			req_json['order_processed']=True
-			b=requests.put(url,json=req_json)
-			print(b.json())
+			beta=requests.put(url,json=req_json)
+			print(beta.json())
 	else:
 		array=[noof_gloves_small,noof_gloves,noof_sweater_small,noof_sweater,noof_socks,noof_muffler,noof_monkey_cap_small,noof_monkey_cap]
 		if(array.count(0)==len(array)):
@@ -170,9 +170,32 @@ def allocatedistrict(request,slug):
 						c[i].append(0)
 
 			for i in range(length):
-				url="http://127.0.0.1:8000/TailorworkAllocated/"
-				myobj={'tailor':b[i]['id'],'gloves_small':c[i][0],'gloves':c[i][1],'sweater_small': c[i][2],'sweater': c[i][3],'socks': c[i][4],'muffler': c[i][5],'monkey_cap_small':c[i][6],'monkey_cap': c[i][7]}
-				x=requests.post(url,json=myobj)
+				if(sum(c[i])>0):
+					url="http://127.0.0.1:8000/TailorworkAllocated/"
+					today_date=datetime.today().strftime('%Y-%m-%d')
+					myobj={'tailor':b[i]['id'],'gloves_small':c[i][0],'gloves':c[i][1],'sweater_small': c[i][2],'sweater': c[i][3],'socks': c[i][4],'muffler': c[i][5],'monkey_cap_small':c[i][6],'monkey_cap': c[i][7],"dateofallocation":today_date}
+					x=requests.post(url,json=myobj)
+					urlmobile = "https://http-api.d7networks.com/send"
+					mobileno=b[i]['phonenumber']
+					mobileno="+91"+mobileno
+
+					custommessage="Hey "+str(b[i]['firstname'])+" "+str(b[i]['lastname'])+" you have been allocated with gloves small:"+str(c[i][0])+" gloves:"+str(c[i][1])+" sweater small:"+str(c[i][2])+" sweater:"+str(c[i][3])+" socks:"+str(c[i][4])+" muffler:"+str(c[i][5])+" monkeycap small:"+str(c[i][6])+" monkey cap:"+str(c[i][7])+" Thank you, call +917829826952 for further queries"
+					querystring = {
+					"username":"bhpq4660",
+					"password":"mBTcsbRf",
+					"from":"Test%20SMS",
+					"content":custommessage,
+					"dlr-method":"POST",
+					"dlr-url":"https://4ba60af1.ngrok.io/receive",
+					"dlr":"yes",
+					"dlr-level":"3",
+					"to":mobileno
+					}
+					headers = {
+					'cache-control': "no-cache"
+					}
+					response = requests.request("GET", urlmobile, headers=headers, params=querystring)
+					print(response)
 
 			for i in a1:
 				url="http://127.0.0.1:8000/order/"+str(i['id'])+"/"
@@ -181,9 +204,29 @@ def allocatedistrict(request,slug):
 				del req_json['url'];
 				del req_json['id'];
 				req_json['order_processed']=True
-				b=requests.put(url,json=req_json)
+				beta=requests.put(url,json=req_json)
+
+			j=0
+			for i in b:
+
+				if(sum(c[j])>0):
+					url="http://127.0.0.1:8000/Tailor/"+str(i['id'])+"/"
+					x=requests.get(url)
+					req_json=x.json()
+					del req_json['url'];
+					del req_json['id'];
+					req_json['work_allocated']=True
+					betaq=requests.put(url,json=req_json)
+					j+=1
+				
+
+
+
 
 			return JsonResponse({'message':'allocation was successfull'})
+
+
+
 
 
 
