@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from api.models import OrderUser,Order,District,Tailor,TailorWorkAllocated
+from api.models import OrderUser,Order,District,Tailor,TailorWorkAllocated,DistrictwiseReadyList
  
 class DistrictSerializer(serializers.ModelSerializer):
  
@@ -38,3 +38,12 @@ class TailorWorkAllocatedSerializer(serializers.ModelSerializer):
     class Meta:
         model = TailorWorkAllocated
         fields = ('id','url','tailor','gloves_small','gloves','sweater_small','sweater','socks','muffler','monkey_cap_small','monkey_cap','order_completed','dateofallocation')
+
+
+
+
+class DistrictwiseReadyListSerializer(serializers.ModelSerializer):
+ 
+    class Meta:
+        model = DistrictwiseReadyList
+        fields = ('id','url','district','gloves_small','gloves','sweater_small','sweater','socks','muffler','monkey_cap_small','monkey_cap')

@@ -63,4 +63,16 @@ class TailorWorkAllocated(models.Model):
     dateofallocation=models.DateField(default=datetime.date.today)
 
 
+class DistrictwiseReadyList(models.Model):
+    district=models.ForeignKey(District, on_delete=models.CASCADE)
+    gloves_small=models.IntegerField(default=0)
+    gloves=models.IntegerField(default=0)
+    sweater_small=models.IntegerField(default=0)
+    sweater=models.IntegerField(default=0)
+    socks=models.IntegerField(default=0)
+    muffler=models.IntegerField(default=0)
+    monkey_cap_small=models.IntegerField(default=0)
+    monkey_cap=models.IntegerField(default=0)
+
+
 
