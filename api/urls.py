@@ -12,5 +12,5 @@ router.register('TailorworkAllocated',views.TailorWorkAllocatedView)
 urlpatterns = [
     path('',include(router.urls)),
     url(r'^api/district/(?P<slug>[-\w]+)$',views.district_wise_results),
-    url(r'^api/allocate',views.allocatedistrict)
+    url(r'^api/allocate/(?P<slug>[-\w]+)$',views.allocatedistrict)
 ]

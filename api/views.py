@@ -93,9 +93,9 @@ def district_wise_results(request,slug):
 		data={'noof_gloves_small':noof_gloves_small,'noof_gloves':noof_gloves,'noof_sweater_small':noof_sweater_small,'noof_sweater':noof_sweater,'noof_socks':noof_socks,'noof_muffler':noof_muffler,'noof_monkey_cap_small':noof_monkey_cap_small,'noof_monkey_cap':noof_monkey_cap}
 		return JsonResponse(data,safe=False)
 
-
-def allocatedistrict(request):
-	orderlist=Order.objects.filter(ordergiver__district__name="Davanagere",order_processed=False).order_by('sweater')
+@api_view(['GET'])
+def allocatedistrict(request,slug):
+	orderlist=Order.objects.filter(ordergiver__district__name=slug,order_processed=False).order_by('sweater')
 	a1=[]
 	"""tailorlist=Tailor.objects.filter(work_allocated=False).order_by('working_cap_perday').reverse()
 	a=[]
@@ -109,7 +109,7 @@ def allocatedistrict(request):
 	for i in tailorlist:
 		b.append(i.__dict__)"""
 
-	url1="http://127.0.0.1:8000/api/district/"+"Davanagere"
+	url1="http://127.0.0.1:8000/api/district/"+str(slug)
 	a=requests.get(url1)
 	a=a.json()
 	print(a)
