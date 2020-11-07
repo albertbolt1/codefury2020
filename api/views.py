@@ -363,7 +363,6 @@ def districtwisesendtopeople(request,pk):
 			'cache-control': "no-cache"
 			}
 			response = requests.request("GET", urlmobile, headers=headers, params=querystring)
-			print(response.json())
 		return JsonResponse({'message':'successfull'})
 	
 
@@ -414,7 +413,6 @@ def autoservice(request,slug):
 		'cache-control': "no-cache"
 		}
 		response = requests.request("GET", urlmobile, headers=headers, params=querystring)
-		print(response.json())
 
-		return JsonResponse({'name':'address'})
+		return JsonResponse({name:address})
 
