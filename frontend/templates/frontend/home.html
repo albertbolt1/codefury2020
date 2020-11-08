@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  background-image: url('https://i.ibb.co/vj1YjL8/photo-1560796952-f1c9b838544c.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+  background-size: 100% 100%;
+}
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700");
+
+.with-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.with-shadow {
+  background-color: #02c4c3;
+  padding: 0 0 0 2em;
+  font-family: "Open Sans", sans-serif;
+  color: white;
+}
+
+.label {
+  letter-spacing: 0.15em;
+}
+.mid
+{
+	text-align: center;
+}
+
+.some
+{
+	position: fixed;
+	left:40%;
+	top:40%;
+}
+
+button
+{
+	width: 100px;
+	height:50px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="with-shadow">
+  <h1 class="mid">Atmanirbhar  Bharat</h1>
+</div>
+<div class="some">
+	<button>
+  <a href="{% url 'giveorder' %}" class="btn btn-primary">Order</a>
+</button>
+<button>
+  <a href="{% url 'tailor' %}" class="btn btn-default">Tailor</a>
+  </button>
+
+  <button>
+  <a href="#" class="btn btn-default">Autowala</a>
+  </button>
+</div>
+</body>
+</html>

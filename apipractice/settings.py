@@ -32,8 +32,10 @@ ALLOWED_HOSTS = ['127.0.0.1','codefurybackend.herokuapp.com','https://codefuryba
 
 INSTALLED_APPS = [
     'api.apps.ApiConfig',
+    'frontend.apps.FrontendConfig',
     'django.contrib.admin',
     'django.contrib.auth',
+    'crispy_forms',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -126,3 +128,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = '/frontend/order'
+LOGIN_URL='/frontend/login'
