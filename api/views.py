@@ -10,6 +10,7 @@ from django.core import serializers
 from django.http.response import JsonResponse
 import requests 
 import math
+from rest_framework.parsers import JSONParser 
 
 class DistrictView(viewsets.ModelViewSet):
 	queryset = District.objects.all()
@@ -418,3 +419,16 @@ def autoservice(request,slug):
 
 
 
+@api_view(['POST'])
+def helpsignup(request):
+	if(request.method=='POST'):
+		a=JSONParser().parse(request)
+		b=a['name']
+		c=a['phonenumber']
+		d=a['password']
+		e=OrderUser.objects.get(name=b,phonenumber=c)
+		passwordin=e.password
+		if(passwordin==d):
+			return JsonResponse({'message':'login successfull'})
+		else:
+			return JsonResponse({'message':'Invalid login credentials'})

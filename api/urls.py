@@ -18,5 +18,9 @@ urlpatterns = [
     url(r'^api/allocate/(?P<slug>[-\w]+)$',views.allocatedistrict),
     url(r'^api/orderdone/(?P<pk>[0-9]+)$',views.donewithallocatedproducts),
     url(r'^api/sendtopeople/(?P<pk>[0-9]+)$',views.districtwisesendtopeople),
-    url(r'^api/autoservice/(?P<slug>[-\w]+)$',views.autoservice)
+    url(r'^api/autoservice/(?P<slug>[-\w]+)$',views.autoservice),
+    url(r'^api/signup',views.helpsignup) 
 ]
+
+"""api/signup is used to get info about login credentials(ie whether correct or not)
+"""
